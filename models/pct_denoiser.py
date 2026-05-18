@@ -2,21 +2,8 @@ from __future__ import annotations
 
 import math
 
-
-
-def require_jittor():
-    try:
-        import jittor as jt
-        from jittor import nn
-    except ImportError as exc:
-        raise ImportError(
-            "Jittor is required. Install it first, e.g. pip install jittor"
-        ) from exc
-    return jt, nn
-
-
-jt, nn = require_jittor()
-
+import jittor as jt
+from jittor import nn
 
 class SelfAttentionBlock(nn.Module):
     def __init__(self, channels: int):
@@ -56,7 +43,9 @@ class PCTDenoiser(nn.Module):
         for blk in self.blocks:
             x = blk(x)
 
-        global_feat = jt.max(x, dim=1, keepdims=True)[0]
+        global_feat = jt.max(x, dim=1, keepdims=True)
+        if isinstance(global_feat, tuple):
+            global_feat = global_feat[0]
         global_feat = global_feat.broadcast([x.shape[0], x.shape[1], global_feat.shape[-1]])
         feat = jt.concat([x, global_feat], dim=-1)
         residual = self.mlp(feat)
