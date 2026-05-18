@@ -18,9 +18,9 @@ def _read_split(split_files):
 def _normalize_unit_sphere(points: np.ndarray) -> np.ndarray:
     centroid = points.mean(axis=1, keepdims=True)
     centered = points - centroid
-    radius = np.sqrt((centered**2).sum(axis=2)).max(axis=1, keepdims=True)
-    radius = np.maximum(radius[..., None], 1e-8)
-    return centered / radius
+    max_radius = np.sqrt((centered**2).sum(axis=2)).max(axis=1, keepdims=True)[..., None]
+    safe_radius = np.maximum(max_radius, 1e-8)
+    return centered / safe_radius
 
 
 def preprocess(raw_dir: Path, output_dir: Path, num_points: int = 1024) -> None:

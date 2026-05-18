@@ -19,7 +19,7 @@ class SelfAttentionBlock(nn.Module):
         q = self.q_proj(x)
         k = self.k_proj(x)
         v = self.v_proj(x)
-        scale = math.sqrt(max(q.shape[-1], 1))
+        scale = math.sqrt(q.shape[-1])
         attn = nn.softmax(jt.matmul(q, k.transpose((0, 2, 1))) / scale, dim=-1)
         out = jt.matmul(attn, v)
         out = self.out_proj(out)

@@ -65,7 +65,9 @@ def main() -> None:
             metrics = evaluate_pair(pred[i], clean[i], with_emd=args.with_emd)
             cd_scores.append(metrics["cd"])
             if args.with_emd:
-                emd_scores.append(metrics["emd"])
+                emd = metrics["emd"]
+                if not np.isnan(emd):
+                    emd_scores.append(emd)
 
             if saved < args.max_save:
                 residual = noisy[i] - pred[i]
@@ -87,9 +89,8 @@ def main() -> None:
     }
     if args.with_emd:
         arr = np.array(emd_scores, dtype=np.float32)
-        valid = arr[~np.isnan(arr)]
-        result["emd_mean"] = float(valid.mean()) if len(valid) else float("nan")
-        result["emd_std"] = float(valid.std()) if len(valid) else float("nan")
+        result["emd_mean"] = float(arr.mean()) if len(arr) else float("nan")
+        result["emd_std"] = float(arr.std()) if len(arr) else float("nan")
 
     out_metrics = Path(args.save_metrics)
     out_metrics.parent.mkdir(parents=True, exist_ok=True)
