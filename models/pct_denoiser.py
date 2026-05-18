@@ -5,6 +5,7 @@ import math
 import jittor as jt
 from jittor import nn
 
+
 class SelfAttentionBlock(nn.Module):
     def __init__(self, channels: int):
         super().__init__()

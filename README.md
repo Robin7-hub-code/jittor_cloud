@@ -13,7 +13,7 @@
 pip install -r requirements.txt
 ```
 
-> 首次使用 Jittor 时，可能会自动编译算子，耗时取决于环境。
+> 首次使用 Jittor 时，可能会自动编译算子，通常需要约 3~20 分钟（取决于 CPU/GPU 与网络）。如遇环境问题可参考 Jittor 官方文档：https://cg.cs.tsinghua.edu.cn/jittor/
 
 ## 2. 数据准备
 
