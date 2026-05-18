@@ -57,7 +57,8 @@ def main() -> None:
 
     for epoch in range(1, args.epochs + 1):
         losses = []
-        for noisy, clean, _ in split_iterator(train_dataset, batch_size=args.batch_size, shuffle=True, seed=args.seed + epoch):
+        epoch_seed = (args.seed + epoch) % (2**31 - 1)
+        for noisy, clean, _ in split_iterator(train_dataset, batch_size=args.batch_size, shuffle=True, seed=epoch_seed):
             noisy_jt = jt.array(noisy)
             clean_jt = jt.array(clean)
             pred = model(noisy_jt)

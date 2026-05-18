@@ -56,7 +56,7 @@ class PCTDenoiser(nn.Module):
         for blk in self.blocks:
             x = blk(x)
 
-        global_feat = jt.max(x, dim=1, keepdims=True)
+        global_feat = jt.max(x, dim=1, keepdims=True)[0]
         global_feat = global_feat.broadcast([x.shape[0], x.shape[1], global_feat.shape[-1]])
         feat = jt.concat([x, global_feat], dim=-1)
         residual = self.mlp(feat)

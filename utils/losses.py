@@ -3,16 +3,7 @@ from __future__ import annotations
 import numpy as np
 
 
-def _require_jittor():
-    try:
-        import jittor as jt
-    except ImportError as exc:
-        raise ImportError("Jittor is required for loss computation") from exc
-    return jt
-
-
 def chamfer_distance(pred, target):
-    _require_jittor()
     pred_expand = pred.unsqueeze(2)
     target_expand = target.unsqueeze(1)
     dist = ((pred_expand - target_expand) ** 2).sum(dim=-1)
